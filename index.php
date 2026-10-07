@@ -1,7 +1,7 @@
 <?php
 // ดึงค่า Environment Variables จาก Railway
 $host = getenv('MYSQLHOST') ?: 'localhost';
-$port = getenv('MYSQLPORT') ?: '3307';
+$port = getenv('MYSQLPORT') ?: '3306';
 $dbname = getenv('MYSQLDATABASE') ?: 'railway';
 $user = getenv('MYSQLUSER') ?: 'root';
 $pass = getenv('MYSQLPASSWORD') ?: '';
