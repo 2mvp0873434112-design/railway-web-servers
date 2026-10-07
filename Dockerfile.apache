@@ -1,18 +1,19 @@
 FROM php:8.2-apache
 
-# ติดตั้ง Extension pdo และ pdo_mysql
+# ติดตั้ง extension pdo
 RUN docker-php-ext-install pdo pdo_mysql
 
-# ปิด MPM event/worker และเปิดใช้งาน mpm_prefork เพียงตัวเดียว
-RUN a2dismod mpm_event mpm_worker || true \
-    && a2enmod mpm_prefork rewrite
+# เคลียร์ config MPM เดิมออกทั้งหมด แล้วบังคับเปิดเฉพาะ prefork
+RUN rm -f /etc/apache2/mods-enabled/mpm_*.load /etc/apache2/mods-enabled/mpm_*.conf \
+    && ln -s /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/ \
+    && ln -s /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/ \
+    && a2enmod rewrite
 
-# คัดลอกโค้ดเว็บไปยัง DocumentRoot
+# คัดลอกโค้ด
 COPY index.php /var/www/html/
-
-# กำหนดสิทธิ์โฟลเดอร์ให้ www-data
 RUN chown -R www-data:www-data /var/www/html
 
+# บังคับรันบนพอร์ต 80
 ENV PORT=80
 EXPOSE 80
 
