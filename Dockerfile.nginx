@@ -11,8 +11,8 @@ RUN docker-php-ext-install pdo pdo_mysql
 RUN mkdir -p /run/nginx /var/log/supervisor /var/www/html
 
 # 5. คัดลอกคอนฟิก NGINX และ Supervisor เข้าไปแทนที่
-COPY default.conf /etc/nginx/http.d/default.conf
-COPY supervisord.conf /etc/supervisord.conf
+COPY nginx-only/default.conf /etc/nginx/http.d/default.conf
+COPY nginx-only/supervisord.conf /etc/supervisord.conf
 
 # 6. คัดลอกไฟล์โค้ดโปรเจกต์
 COPY index.php /var/www/html/
